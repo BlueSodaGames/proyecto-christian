@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Aim
+  - FirePoint
+  - Background
+  - Bullet
+  - Enemy
+  - Collisions
+  - World
+  - Enemy Bullet
+  - CinematicPanel
+  - OverworldPanel
+  - Breakable
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Player
+  - DeathThings
+  - PlayerBullet
+  - Enemy
+  - Collisions
+  - Room
+  - Ground
+  - Cursor
+  - Interactuable
+  - Enemy Bullet
+  - Atravesable
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 425257697
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0

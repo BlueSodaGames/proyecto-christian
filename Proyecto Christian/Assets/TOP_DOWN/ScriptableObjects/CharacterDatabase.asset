@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4113848f01c59f84d90b3c7cafc7d813, type: 3}
+  m_Name: CharacterDatabase
+  m_EditorClassIdentifier: 
+  character:
+  - characterName: Libra
+    description: Libra Description.
+    cost: 0
+    unlocked: 1
+    characterSprite: {fileID: 1083783255, guid: fd9074b87288a1543936eefb2ac20550, type: 3}
+    borderSprite: {fileID: -242814277, guid: af313d6847004094e93b203ff74862ad, type: 3}
+    characterAnimator: {fileID: 9100000, guid: 74a87f47e0eec494d83f2157e1a08aae, type: 2}
+    borderAnimator: {fileID: 22100000, guid: 4dc9e33a75ec44d4eb53365dde78c23f, type: 2}
+  - characterName: Draco
+    description: Draco Description.
+    cost: 150
+    unlocked: 0
+    characterSprite: {fileID: 2016988533, guid: 1bdc54ba4924e7840bdd778e6aa57639, type: 3}
+    borderSprite: {fileID: -1194228634, guid: 1f0a356d60806da43916aad62a7f2d94, type: 3}
+    characterAnimator: {fileID: 9100000, guid: d554ecccb5afbf5488f9fe614c2a8f14, type: 2}
+    borderAnimator: {fileID: 22100000, guid: c83dfd679d873b644848079738cf47dc, type: 2}

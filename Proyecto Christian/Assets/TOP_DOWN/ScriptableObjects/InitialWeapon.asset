@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65f9412261240234d8016af6731458fe, type: 3}
+  m_Name: InitialWeapon
+  m_EditorClassIdentifier: 
+  currentWeaponSprite: {fileID: 21300000, guid: 699c6acbea1ef6f47a4732bb2635c323, type: 3}
+  currentWeaponAnimator: {fileID: 9100000, guid: 0d492ec67929a634385575127450e73c, type: 2}
+  shootingPattern: 0
+  bulletPrefab: {fileID: 150736653285356150, guid: d9ea9a0051b38834399434b06d503df5, type: 3}
+  fireRate: 1
+  damage: 1
+  bulletForce: 10
+  amountSpreed: 1
+  bulletDuration: 2
+  Seffect: {fileID: 150736653285356150, guid: d9ea9a0051b38834399434b06d503df5, type: 3}
+  Seffect2: {fileID: 150736653285356150, guid: d9ea9a0051b38834399434b06d503df5, type: 3}
+  shootClips:
+  - {fileID: 8300000, guid: 5a255306f05035e45b77c28114cb6d15, type: 3}
