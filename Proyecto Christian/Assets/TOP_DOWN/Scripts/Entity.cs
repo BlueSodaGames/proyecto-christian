@@ -249,12 +249,10 @@ public class Entity : MonoBehaviour
             player.Knockback(transform);
             if (destroyOnCollision)
             {
-                var entity = GetComponent<Entity>();
                 CinemachineShake.Instance.ShakeCamera(3.5f, .1f);
                 FindObjectOfType<AudioManager>().PlaySFX("Impact");
-                //entity.TakeHit(1);
+                this.TakeHit(1);
             }
-
 
         }
         if (collision.CompareTag("World"))

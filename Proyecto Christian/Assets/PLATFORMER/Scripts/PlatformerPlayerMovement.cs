@@ -16,7 +16,7 @@ public class PlatformerPlayerMovement : MonoBehaviour
     [Header("Animation/States")]
     private string actualState;
     private bool idle = true, jumping = false, walking = false, falling = false;
-    [HideInInspector] public bool canMove;
+    [HideInInspector] public bool canMove = true;
 
     [Space]
     [Header("Components")]
@@ -38,10 +38,14 @@ public class PlatformerPlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckMovement();
+        if (canMove)
+        {
+            CheckMovement();
 
-        CheckJump();
-        AnimationUpdate();
+            CheckJump();
+            AnimationUpdate();
+        }
+        
     }
 
     #region SALTOS

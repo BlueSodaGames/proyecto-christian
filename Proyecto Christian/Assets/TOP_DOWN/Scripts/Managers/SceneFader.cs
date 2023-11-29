@@ -24,7 +24,7 @@ public class SceneFader : MonoBehaviour
 
     public IEnumerator LoadLevel(int levelIndex)
     {
-        AudioManager.Instance.PlaySFX("SceneChange");
+        //AudioManager.Instance.PlaySFX("SceneChange");
         if (transition != null)
         {
             transition.SetTrigger("Start");

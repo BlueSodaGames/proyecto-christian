@@ -120,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06310296, y: -0.36580658}
+  m_Offset: {x: -0.070115566, y: -0.36580658}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.53125, y: 0.65625}
@@ -131,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.78302145, y: 1.0238991}
+  m_Size: {x: 0.9372959, y: 1.0238991}
   m_EdgeRadius: 0
 --- !u!61 &4708017501447123180
 BoxCollider2D:
@@ -165,7 +165,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0572834, y: -0.37755036}
+  m_Offset: {x: -0.06360197, y: -0.34279823}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.53125, y: 0.65625}
@@ -176,7 +176,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.65629864, y: 0.84898007}
+  m_Size: {x: 0.5994315, y: 0.7162905}
   m_EdgeRadius: 0
 --- !u!114 &5084116583274253675
 MonoBehaviour:
@@ -195,20 +195,19 @@ MonoBehaviour:
   moveSpeed: 3
   target: {fileID: 0}
   col: {fileID: 3405049459807324487}
-  destroyOnCollision: 0
+  destroyOnCollision: 1
   homePosition: {x: 0, y: 0}
   knockbackVel: 4
   knockbackTime: 0.25
   knockbacked: 0
   knockbackDirection: {x: 0, y: 0, z: 0}
   thisLoot: {fileID: 0}
-  entityType: 0
   lineOfSite: 15
   obstacleDetectionDistance: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 1024
-  attackRange: 1
+  attackRange: 1.5
   explosion: {fileID: 5532406335507682229, guid: 8d25c0ebab5ebe64c80d1b9d3fa511bc, type: 3}
   wakeDistance: 6
 --- !u!95 &2825962967500226896

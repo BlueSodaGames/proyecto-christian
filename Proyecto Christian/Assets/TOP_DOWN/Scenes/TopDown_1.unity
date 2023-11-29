@@ -163,7 +163,7 @@ MonoBehaviour:
   timeBtwShots: 1
   coll: {fileID: 0}
   center: {fileID: 4951028}
-  knockbackVel: 90
+  knockbackVel: 1
   knockbackTime: 0.5
   knockbacked: 0
   knockbackDirection: {x: 0, y: 0, z: 0}
@@ -1502,7 +1502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8071714823162080566, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.5881958
+      value: 1.5881348
       objectReference: {fileID: 0}
     - target: {fileID: 8071714823162080566, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
       propertyPath: m_AnchoredPosition.y

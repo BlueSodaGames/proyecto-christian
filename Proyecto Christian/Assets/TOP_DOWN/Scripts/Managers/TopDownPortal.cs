@@ -20,7 +20,7 @@ public class TopDownPortal : MonoBehaviour
         if (player)
         {
 
-            player.canMove = true;
+            player.canMove = false;
             //PlayerPrefs.SetInt("NumberOfCoins", player.numberOfCoins);
             //PlayerPrefs.SetInt("NumberOfMemories", player.numberOfMemories);
             

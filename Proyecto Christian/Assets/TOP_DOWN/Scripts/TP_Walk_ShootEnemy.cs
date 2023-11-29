@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class TP_Walk_ShootEnemy : Entity
 {
@@ -23,7 +24,6 @@ public class TP_Walk_ShootEnemy : Entity
     public float wakeDistance;
     public float obstacleDetectionDistance = 2f;
     public LayerMask obstacleLayer;
-
 
     private void Update()
     {
