@@ -38,20 +38,15 @@ public class Bullet : MonoBehaviour
             CinemachineShake.Instance.ShakeCamera(3.5f, .1f);
             FindObjectOfType<AudioManager>().PlaySFX("Impact");
 
-
             //enemy.GetComponent<Entity>().Flash();
             enemy.GetComponent<Entity>().Knockback(transform);
             enemy.GetComponent<Entity>().TakeHit(GameObject.FindGameObjectWithTag("Player").GetComponent<TopDownPlayerMovement>().currentWeapon.damage);
         }
 
-        GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
-        Destroy(effect, .5f);
         Destroy(gameObject);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
-        Destroy(effect, .5f);
         Destroy(gameObject);
     }
 

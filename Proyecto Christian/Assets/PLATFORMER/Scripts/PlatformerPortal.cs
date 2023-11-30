@@ -14,13 +14,14 @@ public class PlatformerPortal : MonoBehaviour
 
     private bool catched;
 
-    [SerializeField] private PlatformerPlayerMovement player;
+    [SerializeField] private GameObject player;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (player)
+        player = collision.gameObject;
+        if (player && player.tag == "Player" && collision.isTrigger)
         {
 
-            player.canMove = false;
+            player.GetComponent<PlatformerPlayerMovement>().canMove = false;
             //PlayerPrefs.SetInt("NumberOfCoins", player.numberOfCoins);
             //PlayerPrefs.SetInt("NumberOfMemories", player.numberOfMemories);
             
@@ -42,7 +43,7 @@ public class PlatformerPortal : MonoBehaviour
     IEnumerator animationCoroutine(Animator playerAnimator)
     {
         catched = true;
-        player.coll.enabled = false;
+        player.GetComponent<BoxCollider2D>().enabled = false;
         col.enabled = false;
         yield return new WaitForSeconds(0.4f);
         

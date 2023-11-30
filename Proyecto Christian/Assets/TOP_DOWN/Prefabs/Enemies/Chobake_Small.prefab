@@ -141,7 +141,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: -1593817799, guid: c4d0da97729f6834d86760bfaf350553, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -243,7 +243,6 @@ MonoBehaviour:
   knockbacked: 0
   knockbackDirection: {x: 0, y: 0, z: 0}
   thisLoot: {fileID: 0}
-  entityType: 0
   lineOfSite: 13
   obstacleDetectionDistance: 2
   obstacleLayer:

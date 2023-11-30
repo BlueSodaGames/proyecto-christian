@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using PixelCrushers.DialogueSystem.UnityGUI;
+using System.Collections;
 
 namespace PixelCrushers.DialogueSystem.Demo
 {
@@ -33,7 +34,7 @@ namespace PixelCrushers.DialogueSystem.Demo
             if (!string.IsNullOrEmpty(startMessage)) DialogueManager.ShowAlert(startMessage);
             if (!loaded)
             {
-                SaveSystem.LoadFromSlot(1);
+                LoadGame();
             }
             
         }

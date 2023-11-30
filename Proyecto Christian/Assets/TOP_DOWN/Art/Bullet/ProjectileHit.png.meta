@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 438f9c9d31813c3478d5eea4774dadfb
+guid: 9b672028d28f1f242b8037dee607faee
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,7 +123,49 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Chobake_Projectile_0
+      name: ProjectileHit_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 000d0c3377c61274bb97209e695bc21a
+      internalID: 1002968806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileHit_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2dce18dbcd6b7f24f9239c42080588ca
+      internalID: 1134312941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ProjectileHit_2
       rect:
         serializedVersion: 2
         x: 0
@@ -137,14 +179,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da662a56c87e4fd46830a242af521021
-      internalID: 1122662945
+      spriteID: 5ff4c89e78388254e8347098488bd703
+      internalID: 1325052212
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Chobake_Projectile_1
+      name: ProjectileHit_3
       rect:
         serializedVersion: 2
         x: 0
@@ -158,8 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2769761b5afbd774abf1674f14ba5b5f
-      internalID: 1943355396
+      spriteID: 76bc4f5e79f91ab4e87580bd71aff44e
+      internalID: 1967491101
       vertices: []
       indices: 
       edges: []
@@ -175,8 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Chobake_Projectile_0: 1122662945
-      Chobake_Projectile_1: 1943355396
+      ProjectileHit_0: 1002968806
+      ProjectileHit_1: 1134312941
+      ProjectileHit_2: 1325052212
+      ProjectileHit_3: 1967491101
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

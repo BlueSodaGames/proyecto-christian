@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8639628024137219152}
   - component: {fileID: 4967357714192862897}
   - component: {fileID: 168145050748935819}
+  - component: {fileID: 4946860908441690546}
   m_Layer: 15
   m_Name: Projectile
   m_TagString: Enemy Bullet
@@ -35,7 +36,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3138305849326511498
 SpriteRenderer:
@@ -78,12 +79,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 438f9c9d31813c3478d5eea4774dadfb, type: 3}
+  m_Sprite: {fileID: 1122662945, guid: 438f9c9d31813c3478d5eea4774dadfb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -131,7 +132,7 @@ MonoBehaviour:
   targetPlayer: 1
   target: {fileID: 0}
   speed: 5
-  hitEffect: {fileID: 0}
+  hitEffect: {fileID: 1003181716982602949, guid: d426e329210c0934e91b08a128fc29f4, type: 3}
   timeToDestroy: 10
 --- !u!114 &8639628024137219152
 MonoBehaviour:
@@ -230,7 +231,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 2, y: 2}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -275,7 +276,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 2, y: 2}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -283,3 +284,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.38429832, y: 0.59780765}
   m_EdgeRadius: 0
+--- !u!95 &4946860908441690546
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3624221026189180069}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f100109b6fb391f4b9d6ad0710f05720, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

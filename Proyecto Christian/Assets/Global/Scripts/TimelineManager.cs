@@ -1,3 +1,4 @@
+using PixelCrushers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,16 +8,32 @@ public class TimelineManager : MonoBehaviour
 {
     [SerializeField] private bool disableInputAtStart;
     [SerializeField] private TopDownPlayerMovement player;
+    [SerializeField] private PlatformerPlayerMovement playerPlatformer;
+    [SerializeField] private AdventurePlayerMovement playerAdventure;
     [SerializeField] private PlayableDirector timeline;
     public GameObject[] objectsToActive;
+    public GameObject[] objectsToDeactive;
+    public ActiveSaver timelineReproducedSaver;
+
 
     public bool finished;
     void Start()
     {
         if (disableInputAtStart)
         {
-
-            player.disableInput = true;
+            if (player)
+            {
+                player.disableInput = true;
+            }
+            else if (playerPlatformer)
+            {
+                playerPlatformer.canMove = false;
+            }
+            else if (playerAdventure)
+            {
+                
+            }
+            
         }
         timeline.stopped += OnTimelineFinished;
     }
@@ -25,10 +42,30 @@ public class TimelineManager : MonoBehaviour
     {
         if (aDirector == timeline)
         {
-            player.disableInput = false;
+            if (player)
+            {
+                player.disableInput = false;
+            }
+            else if (playerPlatformer)
+            {
+                playerPlatformer.canMove = true;
+            }
+            else if (playerAdventure)
+            {
+
+            }
+            if (timelineReproducedSaver != null)
+            {
+                timelineReproducedSaver.enabled = true;
+            }
+            
             foreach (GameObject gameObject in objectsToActive)
             {
                 gameObject.SetActive(true);
+            }
+            foreach (GameObject gameObject in objectsToDeactive)
+            {
+                gameObject.SetActive(false);
             }
         }
     }

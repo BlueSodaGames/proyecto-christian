@@ -46,6 +46,8 @@ namespace PixelCrushers
 
         private static List<Saver> m_tmpSavers = new List<Saver>();
 
+        public static bool loadingSceneCoroutineRunning = false;
+
         private static SavedGameData m_savedGameData = new SavedGameData();
 
         private static DataSerializer m_serializer = null;
@@ -849,22 +851,43 @@ namespace PixelCrushers
         private static IEnumerator LoadSceneCoroutine(SavedGameData savedGameData, string spawnpointName, SceneValidationMode sceneValidationMode)
         {
             if (savedGameData == null) yield break;
+
             if (debug) Debug.Log("Save System: Loading scene " + savedGameData.sceneName +
                 (string.IsNullOrEmpty(spawnpointName) ? string.Empty : " [spawn at " + spawnpointName + "]"));
+
             m_savedGameData = savedGameData;
+
+            // Use a flag to ensure the coroutine is not reentered while it's still running
+            if (loadingSceneCoroutineRunning)
+            {
+                yield break;
+            }
+
+            loadingSceneCoroutineRunning = true;
+
             BeforeSceneChange();
+
             if (autoUnloadAdditiveScenes) UnloadAllAdditiveScenes();
             yield return LoadSceneInternal(savedGameData.sceneName, sceneValidationMode);
             ApplyDataImmediate();
+
             // Allow other scripts to spin up scene first:
             for (int i = 0; i < framesToWaitBeforeApplyData; i++)
             {
                 yield return null;
             }
+
             yield return CoroutineUtility.endOfFrame;
+
             m_playerSpawnpoint = !string.IsNullOrEmpty(spawnpointName) ? GameObject.Find(spawnpointName) : null;
-            if (!string.IsNullOrEmpty(spawnpointName) && m_playerSpawnpoint == null) Debug.LogWarning("Save System: Can't find spawnpoint '" + spawnpointName + "'. Is spelling and capitalization correct?");
+
+            if (!string.IsNullOrEmpty(spawnpointName) && m_playerSpawnpoint == null)
+                Debug.LogWarning("Save System: Can't find spawnpoint '" + spawnpointName + "'. Is spelling and capitalization correct?");
+
             ApplySavedGameData(savedGameData);
+
+            // Reset the flag after completing the coroutine
+            loadingSceneCoroutineRunning = false;
         }
 
         // Calls ApplyDataImmediate on all savers.

@@ -16,7 +16,7 @@ public class PlatformerPlayerMovement : MonoBehaviour
     [Header("Animation/States")]
     private string actualState;
     private bool idle = true, jumping = false, walking = false, falling = false;
-    [HideInInspector] public bool canMove = true;
+    public bool canMove = true;
 
     [Space]
     [Header("Components")]
@@ -29,6 +29,7 @@ public class PlatformerPlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canMove = true;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collision>();
@@ -45,7 +46,6 @@ public class PlatformerPlayerMovement : MonoBehaviour
             CheckJump();
             AnimationUpdate();
         }
-        
     }
 
     #region SALTOS

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using PixelCrushers;
+
 public class SceneFader : MonoBehaviour
 {
     public Animator transition;
@@ -32,10 +34,8 @@ public class SceneFader : MonoBehaviour
         
 
         yield return new WaitForSeconds(transitionTime);
-
-        SceneManager.LoadScene(levelIndex);
+        string level = SceneManager.GetSceneByBuildIndex(levelIndex).name;
+        SaveSystem.LoadScene("index:"+levelIndex);
     }
-
-
 
 }
