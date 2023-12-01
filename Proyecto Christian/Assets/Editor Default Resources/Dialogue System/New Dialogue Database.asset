@@ -371,11 +371,11 @@ MonoBehaviour:
       type: 0
       typeString: 
     - title: Actor
-      value: 1
+      value: 2
       type: 5
       typeString: CustomFieldType_Actor
     - title: Conversant
-      value: 1
+      value: 2
       type: 5
       typeString: CustomFieldType_Actor
     overrideSettings:
@@ -418,11 +418,11 @@ MonoBehaviour:
         typeString: 
       - title: Actor
         value: 2
-        type: 0
+        type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
         value: 2
-        type: 0
+        type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
         value: 
