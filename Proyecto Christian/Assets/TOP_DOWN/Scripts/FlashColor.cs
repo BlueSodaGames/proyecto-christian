@@ -10,6 +10,7 @@ public class FlashColor : MonoBehaviour
     public Color flashColor = Color.white; // Color del flash, puedes modificarlo en el Inspector
     public UnityEvent onFlashComplete;
     private Image fadeImage;
+    public bool disable = false;
 
     private void OnEnable()
     {
@@ -32,6 +33,7 @@ public class FlashColor : MonoBehaviour
         if (onFlashComplete != null)
         {
             onFlashComplete.Invoke();
+            
         }
         
         // Se queda en el color con opacidad máxima

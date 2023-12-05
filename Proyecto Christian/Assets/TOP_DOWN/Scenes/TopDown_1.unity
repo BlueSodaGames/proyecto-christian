@@ -3477,62 +3477,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2106432889713390967, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -101
-      objectReference: {fileID: 0}
-    - target: {fileID: 2884951831649505562, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-      propertyPath: m_Enabled
-      value: 1
+    - target: {fileID: 2782369214294293962, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 447386553}
+    - target: {fileID: 2957082847950524176, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
+      propertyPath: portraitImage
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3594665634723787777, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
       propertyPath: m_Name
       value: JRPG Christian
       objectReference: {fileID: 0}
-    - target: {fileID: 3903334889790869426, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-      propertyPath: subtitleText.m_uiText
-      value: 
-      objectReference: {fileID: 599088871}
-    - target: {fileID: 5388897432512977610, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-      propertyPath: m_Text
-      value: Response Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 5388897432512977610, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: fadf4644689109943bf59ebed1b4d49c, type: 3}
-    - target: {fileID: 6661900528681219954, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: f16fecd1ad242b146865b5db8655f81e, type: 3}
     - target: {fileID: 6661900528681219954, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 447386553}
-    - target: {fileID: 6661900528681219954, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-      propertyPath: charactersPerSecond
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661900528681219954, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-      propertyPath: waitOneFrameBeforeStarting
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
---- !u!114 &599088871 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5388897432512977610, guid: 714a1f6246fe0f9429607e4f30074557, type: 3}
-  m_PrefabInstance: {fileID: 599088870}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &628964395
 GameObject:
   m_ObjectHideFlags: 0
@@ -8291,6 +8256,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingBar: {fileID: 176667259}
   loadingScreen: {fileID: 1491030752}
+  gameOverUITopDown: {fileID: 0}
+  gameOverUIPlatformer: {fileID: 0}
 --- !u!1 &1678944942
 GameObject:
   m_ObjectHideFlags: 0
