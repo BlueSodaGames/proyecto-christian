@@ -1,7 +1,6 @@
+using PixelCrushers;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlatformerPlayerMovement : MonoBehaviour
 {
@@ -11,21 +10,30 @@ public class PlatformerPlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 10;
     [SerializeField] private float coyoteTime = 0.1f;
     private float coyoteTimer;
+    public float dashSpeed = 20;
 
     [Space]
     [Header("Animation/States")]
     private string actualState;
-    private bool idle = true, jumping = false, walking = false, falling = false;
+    private bool idle = true, jumping = false, walking = false, falling = false, dashing = false;
     public bool canMove = true;
+    private bool hasDashed;
 
     [Space]
     [Header("Components")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private Animator anim;
     private BetterJumping betterJumping;
     [HideInInspector] public Collision coll;
+    [SerializeField] private BoxCollider2D boxCollider;
 
-    
+    [SerializeField] private GameObject redBackground;
+    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject deathEffect;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,10 +50,56 @@ public class PlatformerPlayerMovement : MonoBehaviour
         if (canMove)
         {
             CheckMovement();
-
+            float xRaw = Input.GetAxisRaw("Horizontal");
+            float yRaw = Input.GetAxisRaw("Vertical");
+            if (Input.GetButtonDown("JumpDash") && !hasDashed)
+            {
+                if (xRaw != 0 || yRaw != 0)
+                {
+                    Dash(xRaw, yRaw);
+                }
+                    
+            }
             CheckJump();
             AnimationUpdate();
         }
+    }
+
+    private void Dash(float x, float y)
+    {
+        hasDashed = true;
+
+        anim.SetTrigger("dash");
+
+        rb.velocity = Vector2.zero;
+        float adjustedX = x * dashSpeed;
+        float adjustedY = y * dashSpeed; // Multiplicar por un factor menor en la dirección Y
+
+        Vector2 dir = new Vector2(adjustedX, adjustedY).normalized;
+
+        rb.velocity += dir * dashSpeed;
+        StartCoroutine(DashWait());
+    }
+    IEnumerator DashWait()
+    {
+        StartCoroutine(GroundDash());
+
+        rb.gravityScale = 0;
+        betterJumping.enabled = false;
+        dashing = true;
+
+        yield return new WaitForSeconds(.3f);
+
+        rb.gravityScale = 2.5f;
+        betterJumping.enabled = true;
+        dashing = false;
+    }
+
+    IEnumerator GroundDash()
+    {
+        yield return new WaitForSeconds(.15f);
+        if (coll.onGround)
+            hasDashed = false;
     }
 
     #region SALTOS
@@ -59,6 +113,8 @@ public class PlatformerPlayerMovement : MonoBehaviour
         }
         if (coll.onGround)
         {
+            hasDashed = false;
+            dashing = false;
             coyoteTimer = coyoteTime;
             betterJumping.enabled = true;
             if (falling)
@@ -77,8 +133,9 @@ public class PlatformerPlayerMovement : MonoBehaviour
             Jump(Vector2.up, false);
             jumping = true;
             ChangeAnimationState("Jump");
-            
         }
+
+        
     }
 
     private void Jump(Vector2 dir, bool wall)
@@ -112,6 +169,7 @@ public class PlatformerPlayerMovement : MonoBehaviour
             anim.SetFloat("anglex", -1);
             Walk(movement);
         }
+
     }
 
     private void Walk(Vector2 movement)
@@ -135,7 +193,11 @@ public class PlatformerPlayerMovement : MonoBehaviour
 
     void AnimationUpdate()
     {
-        if (jumping)
+        if (dashing)
+        {
+            ChangeAnimationState("Dash");
+        }
+        else if (jumping)
         {
             ChangeAnimationState("Jump");
         }
@@ -153,11 +215,37 @@ public class PlatformerPlayerMovement : MonoBehaviour
         }
     }
 
-    public void PlayerDeath()
+    public IEnumerator PlayerDeath()
     {
+        canMove = false;
+        boxCollider.enabled = false;
+        rb.bodyType = RigidbodyType2D.Static;
+        AudioManager.Instance.PlaySFX("DeathSound");
+        AudioManager.Instance.StopMusic("Theme");
 
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
 
+        yield return new WaitForSecondsRealtime(1f);
+        redBackground.SetActive(true);
+
+        spriteRenderer.color = Color.black;
+        spriteRenderer.sortingLayerName = "Effects";
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        this.spriteRenderer.enabled = false;
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        yield return new WaitForSecondsRealtime(0.5f);
+        redBackground.SetActive(false);
+
+        UIManager.Instance.gameOverUIPlatformer.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        AudioManager.Instance.PlayMusic("DeathTheme");
     }
+
+    public void StopDeathMusic()
+    {
+        AudioManager.Instance.StopMusic("DeathTheme");
+    }
+
+
+
 }

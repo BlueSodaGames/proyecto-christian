@@ -8,7 +8,7 @@ public class ShootEvent : MonoBehaviour
     public GameObject[] activated;
 
     public GameObject[] objectsToUnlock;
-    public bool eventPassed;
+    public bool eventPassed = true;
 
     public enum Condition
     {
@@ -32,14 +32,16 @@ public class ShootEvent : MonoBehaviour
                 }
                 break;
             case Condition.ActivateThings:
+                eventPassed = true;
                 foreach (GameObject thing in activated)
                 {
-                    eventPassed = true;
-                    if (thing.activeInHierarchy == false)
+                    if (!thing.activeSelf)
                     {
                         eventPassed = false;
+                        break;
                     }
                 }
+
                 break;
             default:
                 break;

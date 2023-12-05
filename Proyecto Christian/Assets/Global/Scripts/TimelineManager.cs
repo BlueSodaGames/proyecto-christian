@@ -58,14 +58,21 @@ public class TimelineManager : MonoBehaviour
             {
                 timelineReproducedSaver.enabled = true;
             }
-            
-            foreach (GameObject gameObject in objectsToActive)
+
+            if (objectsToActive.Length > 0)
             {
-                gameObject.SetActive(true);
+                foreach (GameObject gameObject in objectsToActive)
+                {
+                    gameObject.SetActive(true);
+                }
             }
-            foreach (GameObject gameObject in objectsToDeactive)
+
+            if (objectsToDeactive.Length > 0)
             {
-                gameObject.SetActive(false);
+                foreach (GameObject gameObject in objectsToDeactive)
+                {
+                    gameObject.SetActive(false);
+                }
             }
         }
     }

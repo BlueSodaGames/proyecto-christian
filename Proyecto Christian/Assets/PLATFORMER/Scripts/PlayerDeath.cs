@@ -6,9 +6,9 @@ public class PlayerDeath : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var player = collision.GetComponent<PlatformerPlayerMovement>();
-        if (player)
+        if (player && collision.isTrigger)
         {
-            player.PlayerDeath();
+            StartCoroutine(player.PlayerDeath());
         }
     }
 

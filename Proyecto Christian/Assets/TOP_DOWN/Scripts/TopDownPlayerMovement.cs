@@ -4,8 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
-
-
+using PixelCrushers;
 
 public enum PlayerState
 {
@@ -75,6 +74,8 @@ public class TopDownPlayerMovement : MonoBehaviour
     [SerializeField] private GameObject blood;
     [SerializeField] private GameObject dashParticle;
     [SerializeField] private ParticleSystem dust;
+    [SerializeField] private GameObject redBackground;
+    [SerializeField] private GameObject gameOverUI;
 
     [Space]
     [Header("Invulnerability Frames")]
@@ -357,7 +358,7 @@ public class TopDownPlayerMovement : MonoBehaviour
 
         if (movement.x != 0 || movement.y != 0 && canMove)
         {
-            CreateDust();
+            //CreateDust();
             if (!audioSource.isPlaying)
             {
                 audioSource.Play();
@@ -408,8 +409,6 @@ public class TopDownPlayerMovement : MonoBehaviour
     }
     #endregion
 
-
-
     #region DASH
     void Dashing()
     {
@@ -447,7 +446,7 @@ public class TopDownPlayerMovement : MonoBehaviour
         if (dashCoolCounter <= 0 && dashCounter <= 0 && !shooting && walking)
         {
             CinemachineShake.Instance.ShakeCamera(3f, .05f);
-            GameObject dashEffect = Instantiate(dashParticle, transform.position, Quaternion.identity);
+            // GameObject dashEffect = Instantiate(dashParticle, transform.position, Quaternion.identity);
             FindObjectOfType<AudioManager>().PlaySFX("Dash");
             dashing = true;
             moveSpeed = dashSpeed;
@@ -479,8 +478,12 @@ public class TopDownPlayerMovement : MonoBehaviour
         
         currentHealth.RuntimeValue -= damage;
         playerHealthSignal.Raise();
-        Instantiate(hitEffect, transform.position, Quaternion.identity);
-        StartCoroutine(FlashCo());
+        // Instantiate(hitEffect, transform.position, Quaternion.identity);
+        if (currentHealth.RuntimeValue > 0)
+        {
+            StartCoroutine(FlashCo());
+        }
+        
         if (currentHealth.RuntimeValue <= 0)
         {
             StartCoroutine(DeathCo());
@@ -495,35 +498,45 @@ public class TopDownPlayerMovement : MonoBehaviour
             yield return null;
         knockbacked = false;
         knockbackDirection = new Vector2(0, 0);
-        Instantiate(deathEffect, transform.position, Quaternion.identity);
         rb.freezeRotation = true;
-        Instantiate(blood, transform.position, Quaternion.identity);
+        // Instantiate(blood, transform.position, Quaternion.identity);
         StartCoroutine(Death());
-
-
     }
 
     IEnumerator Death()
     {
-        AudioManager.Instance.PlaySFX("DeathSound");
-        FindObjectOfType<AudioManager>().StopSfx("Theme");
-        moveSpeed = 0;
+        disableInput = true;
         dying = true;
         timeBtwShots = 99f;
         canDash = false;
         coll.enabled = false;
         rb.bodyType = RigidbodyType2D.Static;
-        yield return new WaitForSeconds(0.71f);
-        AudioManager.Instance.PlaySFX("EnemyPlayerDeath");
-        yield return new WaitForSeconds(1.3f);
-        //LevelManager.instance.GameOver();
-        yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        FindObjectOfType<AudioManager>().PlaySFX("Theme");
-        Destroy(gameObject);
+        AudioManager.Instance.PlaySFX("DeathSound");
+        AudioManager.Instance.StopMusic("Theme");
+
+
+        yield return new WaitForSecondsRealtime(1f);
+        redBackground.SetActive(true);
+
+        mySprite.color = Color.black;
+        mySprite.sortingLayerName = "Effects";
+
+        yield return new WaitForSecondsRealtime(1f);
+        this.mySprite.enabled = false;
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        yield return new WaitForSecondsRealtime(1f);
         currentHealth.RuntimeValue = currentHealth.initialValue;
+        redBackground.SetActive(false);
+        
+        UIManager.Instance.gameOverUITopDown.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        AudioManager.Instance.PlayMusic("DeathTheme");
     }
 
+    public void StopDeathMusic()
+    {
+        AudioManager.Instance.StopMusic("DeathTheme");
+    }
     #endregion
 
     #region KNOCKBACK
@@ -552,10 +565,10 @@ public class TopDownPlayerMovement : MonoBehaviour
 
 
     //----------CREATE DUST----------------
-    void CreateDust()
-    {
-        dust.Play();
-    }
+    // void CreateDust()
+    //{
+    //    dust.Play();
+    //}
 
 
 
@@ -577,5 +590,7 @@ public class TopDownPlayerMovement : MonoBehaviour
         applyCollisions();
 
     }
+
+
 
 }

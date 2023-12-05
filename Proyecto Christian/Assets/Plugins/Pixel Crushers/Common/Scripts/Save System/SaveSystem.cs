@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 namespace PixelCrushers
 {
 
@@ -399,7 +400,8 @@ namespace PixelCrushers
                 if (sceneName.StartsWith("index:"))
                 {
                     var index = SafeConvert.ToInt(sceneName.Substring("index:".Length));
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(index);
+                    // UnityEngine.SceneManagement.SceneManager.LoadScene(index);
+                    yield return LoadAsynchronously(index);
                 }
                 else
                 {
@@ -409,7 +411,8 @@ namespace PixelCrushers
                         if (debug) Debug.LogWarning("Scene '" + sceneName + "' is not a valid scene to load.");
                         yield break;
                     }
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+                    // UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+                    yield return LoadAsynchronouslyName(sceneName);
                 }
                 yield break;
             }
@@ -418,6 +421,44 @@ namespace PixelCrushers
                 yield return instance.StartCoroutine(LoadSceneInternalTransitionCoroutine(sceneName, sceneValidationMode));
             }
         }
+
+        private static IEnumerator LoadAsynchronously(int index)
+        {
+            Debug.Log("Loading scene with index: " + index);
+
+            AsyncOperation operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index);
+
+            while (!operation.isDone)
+            {
+                float progress = Mathf.Clamp01(operation.progress / .9f);
+                if (UIManager.Instance != null)
+                {
+                    UIManager.Instance.loadingBar.value = progress;
+                }
+                yield return null;
+            }
+            
+        }
+
+        private static IEnumerator LoadAsynchronouslyName(string sceneName)
+        {
+            Debug.Log("Loading scene with name: " + sceneName);
+
+            AsyncOperation operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+
+            while (!operation.isDone)
+            {
+                float progress = Mathf.Clamp01(operation.progress / .9f);
+                if (UIManager.Instance != null)
+                {
+                    UIManager.Instance.loadingBar.value = progress;
+                }
+                
+
+                yield return null;
+            }
+        }
+
 
         private static IEnumerator LoadSceneInternalTransitionCoroutine(string sceneName, SceneValidationMode sceneValidationMode)
         {
@@ -748,11 +789,23 @@ namespace PixelCrushers
             if (framesToWaitBeforeSaveDataAppliedEvent == 0 || instance == null)
             {
                 saveDataApplied();
+
             }
             else
             {
                 instance.StartCoroutine(DelayedSaveDataAppliedCoroutine(framesToWaitBeforeSaveDataAppliedEvent));
                 framesToWaitBeforeSaveDataAppliedEvent = 0;
+            }
+
+            instance.StartCoroutine(DisableUIManagerAfterSeconds());
+        }
+
+        protected static IEnumerator DisableUIManagerAfterSeconds()
+        {
+            if (UIManager.Instance != null)
+            {
+                yield return new WaitForSecondsRealtime(0.5f);
+                UIManager.Instance.loadingScreen.SetActive(false);
             }
         }
 
@@ -851,7 +904,10 @@ namespace PixelCrushers
         private static IEnumerator LoadSceneCoroutine(SavedGameData savedGameData, string spawnpointName, SceneValidationMode sceneValidationMode)
         {
             if (savedGameData == null) yield break;
-
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.loadingScreen.SetActive(true);
+            }
             if (debug) Debug.Log("Save System: Loading scene " + savedGameData.sceneName +
                 (string.IsNullOrEmpty(spawnpointName) ? string.Empty : " [spawn at " + spawnpointName + "]"));
 
@@ -888,6 +944,7 @@ namespace PixelCrushers
 
             // Reset the flag after completing the coroutine
             loadingSceneCoroutineRunning = false;
+            
         }
 
         // Calls ApplyDataImmediate on all savers.
