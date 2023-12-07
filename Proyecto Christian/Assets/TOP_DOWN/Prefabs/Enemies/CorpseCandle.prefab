@@ -210,6 +210,7 @@ MonoBehaviour:
   attackRange: 1.5
   explosion: {fileID: 5532406335507682229, guid: 8d25c0ebab5ebe64c80d1b9d3fa511bc, type: 3}
   wakeDistance: 6
+  explodeIfFar: 1
 --- !u!95 &2825962967500226896
 Animator:
   serializedVersion: 5

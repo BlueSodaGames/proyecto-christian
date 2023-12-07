@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PixelCrushers;
+using PixelCrushers.DialogueSystem;
+using TMPro;
+using Unity.VisualScripting;
 
 public class Interactuable : MonoBehaviour
 {
@@ -13,7 +17,8 @@ public class Interactuable : MonoBehaviour
     [Header("Mobile")]
     public float delayToShowText = 0.5f; // El retraso en segundos antes de mostrar el texto.
     private bool isTouched = false;
-
+    public DialogueSystemTrigger dialog;
+    public bool mobile;
 
     private void OnMouseEnter()
     {
@@ -24,7 +29,6 @@ public class Interactuable : MonoBehaviour
             interactableText.ShowText();
         }
     }
-
 
     private void OnMouseExit()
     {
@@ -39,11 +43,14 @@ public class Interactuable : MonoBehaviour
     //MÓVIL
     private void Update()
     {
-        if (Application.isMobilePlatform)
+
+        if (mobile)
         {
             // Detectar el toque en dispositivos móviles.
             if (Input.touchCount > 0)
             {
+                dialog.enabled = true;
+
                 Touch touch = Input.GetTouch(0); // Obtener el primer toque.
 
                 if (touch.phase == TouchPhase.Began)

@@ -41,13 +41,31 @@ public class WeaponHandler : MonoBehaviour
         }
     }
 
-    private void FireSingleShot()
+    public void FireSingleShot()
     {
         CinemachineShake.Instance.ShakeCamera(2f, .1f);
         GameObject bullet = Instantiate(currentWeapon.bulletPrefab, GameObject.FindGameObjectWithTag("FirePoint").transform.position, GameObject.FindGameObjectWithTag("FirePoint").transform.rotation);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(GameObject.FindGameObjectWithTag("FirePoint").transform.up * currentWeapon.bulletForce, ForceMode2D.Impulse);
         
+        FindObjectOfType<AudioManager>().PlaySFX(currentWeapon.shootClips[Random.Range(0, currentWeapon.shootClips.Length)].name);
+    }
+
+    public void FireSingleShotMobile()
+    {
+        CinemachineShake.Instance.ShakeCamera(2f, .1f);
+
+        Transform firePoint = GameObject.FindGameObjectWithTag("FirePoint").transform;
+
+        GameObject bullet = Instantiate(currentWeapon.bulletPrefab, firePoint.position, firePoint.rotation);
+
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+
+        // Calcular la dirección de disparo basándose en la rotación del FirePoint
+        Vector2 fireDirection = firePoint.TransformDirection(Vector2.up);
+
+        rb.AddForce(fireDirection * currentWeapon.bulletForce, ForceMode2D.Impulse);
+
         FindObjectOfType<AudioManager>().PlaySFX(currentWeapon.shootClips[Random.Range(0, currentWeapon.shootClips.Length)].name);
     }
 

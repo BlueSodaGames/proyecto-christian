@@ -1,6 +1,8 @@
 using PixelCrushers;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.AudioSettings;
 
 public class PlatformerPlayerMovement : MonoBehaviour
 {
@@ -32,11 +34,36 @@ public class PlatformerPlayerMovement : MonoBehaviour
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private GameObject deathEffect;
 
+    [Space]
+    [Header("Mobile")]
+    [SerializeField] public bool mobile = false;
+    [SerializeField] public Joystick joystickMovement;
+    [SerializeField] private float tiempoPulsado = 0f;
+
+    public Button botonSalto;
+    public float jumpForceMultiplier = 3f; // Ajusta según sea necesario
+    public float minJumpForce = 5f; // Ajusta según sea necesario
+    public float maxJumpForce = 15f;
+    private float startJumpTime;
+    public float maxJumpHeight = 15f;
+    public bool buttonDash;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        if (mobile)
+        {
+            joystickMovement.gameObject.SetActive(true);
+            botonSalto.gameObject.SetActive(true);
+
+        }
+        else
+        {
+            joystickMovement.gameObject.SetActive(false);
+            botonSalto.gameObject.SetActive(true);
+        }
+
         canMove = true;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -49,14 +76,23 @@ public class PlatformerPlayerMovement : MonoBehaviour
     {
         if (canMove)
         {
-            CheckMovement();
+            if (!mobile)
+            {
+                CheckMovement();
+                CheckJump();
+            }
+            else
+            {
+                CheckMovementMobile();
+                CheckJumpMobile();
+
+            }
             
-            CheckJump();
             AnimationUpdate();
         }
     }
 
-    
+
 
 
     #region SALTOS
@@ -84,15 +120,82 @@ public class PlatformerPlayerMovement : MonoBehaviour
             coyoteTimer -= Time.deltaTime;
         }
 
-
+        
         if (Input.GetButtonDown("Jump") && (coll.onGround || coyoteTimer > 0f))
         {
             Jump(Vector2.up, false);
             jumping = true;
             ChangeAnimationState("Jump");
         }
+    }
 
-        
+    private void CheckJumpMobile()
+    {
+        if (rb.velocity.y < 0)
+        {
+            falling = true;
+            jumping = false;
+        }
+        if (coll.onGround)
+        {
+            dash.hasDashed = false;
+            dash.dashing = false;
+            coyoteTimer = coyoteTime;
+            betterJumping.enabled = true;
+            if (falling)
+            {
+                falling = false;
+            }
+        }
+        else
+        {
+            coyoteTimer -= Time.deltaTime;
+        }
+
+        if (jumping)
+        {
+            float jumpTime = Time.time - startJumpTime;
+            float jumpHeight = Mathf.Clamp(jumpTime * jumpForceMultiplier, minJumpForce, maxJumpForce);
+
+            // Limitar la altura máxima del salto
+            jumpHeight = Mathf.Min(jumpHeight, maxJumpHeight);
+
+            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+        }
+    }
+
+    public void StartJump()
+    {
+        if (coll.onGround || coyoteTimer > 0f)
+        {
+            startJumpTime = Time.time;
+            jumping = true;
+            JumpMobile(Vector2.up, false);
+            ChangeAnimationState("Jump");
+
+            
+        }
+
+        // Si el jugador está en el aire y no está actualmente realizando un dash, realizar el dash
+        if (!coll.onGround && !dash.hasDashed)
+        {
+            dash.buttonDash = true;
+        }
+    }
+
+    // Llamado desde el evento PointerUp del botón
+    public void EndJump()
+    {
+        jumping = false;
+    }
+
+    private void JumpMobile(Vector2 dir, bool wall)
+    {
+        float jumpTime = Time.time - startJumpTime;
+        float jumpHeight = Mathf.Clamp(jumpTime * jumpForceMultiplier, minJumpForce, maxJumpForce);
+
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.velocity += dir * jumpHeight;
     }
 
     private void Jump(Vector2 dir, bool wall)
@@ -101,12 +204,39 @@ public class PlatformerPlayerMovement : MonoBehaviour
         rb.velocity += dir * jumpForce;
     }
 
+
     #endregion
 
 
+
     #region MOVIMIENTO
+
+    private void CheckMovementMobile()
+    {
+        float x = joystickMovement.Horizontal;
+        float y = joystickMovement.Vertical;
+        Vector2 movement = new Vector2(x, y);
+        if (x == 0)
+        {
+            walking = false;
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        if (x > 0)
+        {
+            anim.SetFloat("anglex", 1);
+            Walk(new Vector2(1, movement.y));
+        }
+        //izquierda
+        if (x < 0)
+        {
+            anim.SetFloat("anglex", -1);
+            Walk(new Vector2(-1, movement.y));
+        }
+    }
+
     private void CheckMovement()
     {
+
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector2 movement = new Vector2(x, y);
@@ -122,7 +252,7 @@ public class PlatformerPlayerMovement : MonoBehaviour
         }
         //izquierda
         if (x < 0)
-        {  
+        {
             anim.SetFloat("anglex", -1);
             Walk(movement);
         }

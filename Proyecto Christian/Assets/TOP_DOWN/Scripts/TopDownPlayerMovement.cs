@@ -98,10 +98,12 @@ public class TopDownPlayerMovement : MonoBehaviour
 
     [Space]
     [Header("Mobile")]
-    [SerializeField] private bool mobile = false;
-    [SerializeField] private Joystick joystickMovement, joystickShoot;
+    [SerializeField] public bool mobile = false;
+    [SerializeField] public Joystick joystickMovement, joystickShoot;
 
     [SerializeField] private AudioSource audioSource;
+
+    private Vector3 lastAimPosition;
 
 
     private void Awake()
@@ -111,13 +113,25 @@ public class TopDownPlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        if (Application.isMobilePlatform)
+        //if (Application.isMobilePlatform)
+        //{
+        //    mobile = true;
+
+        //}
+        //else
+        //{
+        //    mobile = false;
+        //}
+        if (mobile)
         {
-            mobile = true;
+            joystickMovement.gameObject.SetActive(true);
+            joystickShoot.gameObject.SetActive(true);
+            
         }
         else
         {
-            mobile = false;
+            joystickMovement.gameObject.SetActive(false);
+            joystickShoot.gameObject.SetActive(false);
         }
 
         savedMoveSpeed = moveSpeed;
@@ -138,14 +152,9 @@ public class TopDownPlayerMovement : MonoBehaviour
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
             mousePos = mousePositionCam.ScreenToWorldPoint(Input.mousePosition);
-            joystickMovement.gameObject.SetActive(false);
-            joystickShoot.gameObject.SetActive(false);
+            
         }
-        else
-        {
-            joystickMovement.gameObject.SetActive(true);
-            joystickShoot.gameObject.SetActive(true);
-        }
+
 
     }
 
@@ -159,6 +168,7 @@ public class TopDownPlayerMovement : MonoBehaviour
             if (mobile)
             {
                 CheckMobileInput();
+                MobileShoot();
             }
             else
             {
@@ -173,7 +183,6 @@ public class TopDownPlayerMovement : MonoBehaviour
 
 
             fireRb.rotation = fireAngle;
-
             CheckAngle();
 
             //------MOVEMENT------
@@ -183,8 +192,14 @@ public class TopDownPlayerMovement : MonoBehaviour
 
             AnimationUpdate();
 
-            //------SHOOT------
-            Shoot();
+            if (!mobile)
+            {
+                //------SHOOT------
+                
+                Shoot();
+            }
+
+            
 
             //------DASH------
             Dashing();
@@ -215,41 +230,16 @@ public class TopDownPlayerMovement : MonoBehaviour
 
     void CheckMobileInput()
     {
-        if (joystickMovement.Horizontal >= 0.4f)
-        {
-            movement.x = 1;
-        }
-        else if (joystickMovement.Horizontal <= -0.4f)
-        {
-            movement.x = -1;
-        }
-        else if (joystickMovement.Vertical >= 0.4f)
-        {
-            movement.y = 1;
-        }
-        else if (joystickMovement.Vertical <= -0.4f)
-        {
-            movement.y = -1;
-        }
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        float horizontal = joystickMovement.Horizontal;
+        float vertical = joystickMovement.Vertical;
 
-        if (joystickShoot.Horizontal >= 0.4f)
-        {
-            angle = 100;
-        }
-        else if (joystickShoot.Horizontal <= -0.4f)
-        {
-            angle = 250;
-        }
-        else if (joystickShoot.Vertical >= 0.4f)
-        {
-            angle = 150;
-        }
-        else if (joystickShoot.Vertical <= -0.4f)
-        {
-            angle = 0;
-        }
-        aimTransform.eulerAngles = new Vector3(0, 0, angle);
+        // Ajustar el movimiento
+        movement.x = (horizontal >= 0.4f) ? 1 : (horizontal <= -0.4f) ? -1 : 0;
+        movement.y = (vertical >= 0.4f) ? 1 : (vertical <= -0.4f) ? -1 : 0;
+
+        // Mover el personaje
+        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        
     }
 
     private void CheckAngle()
@@ -407,6 +397,46 @@ public class TopDownPlayerMovement : MonoBehaviour
             shooting = false;
         }
     }
+
+    void MobileShoot()
+    {
+        float shootHorizontal = joystickShoot.Horizontal;
+        float shootVertical = joystickShoot.Vertical;
+        // Restablecer recentShoot si ha pasado suficiente tiempo desde el último disparo.
+        if (Time.time - timeSinceLastShot > timeToResetRecentShoot)
+        {
+            recentShoot = false;
+        }
+        timeBtwShots -= Time.deltaTime;
+        if (Mathf.Abs(shootHorizontal) >= 0.4f || Mathf.Abs(shootVertical) >= 0.4f)
+        {
+            angle = Mathf.Atan2(shootVertical, shootHorizontal) * Mathf.Rad2Deg + 90f;
+            fireAngle = Mathf.Atan2(shootVertical, shootHorizontal) * Mathf.Rad2Deg - 90f;
+            aimTransform.eulerAngles = new Vector3(0, 0, angle);
+            // Actualizar la última posición del aim
+            lastAimPosition = aimTransform.eulerAngles;
+
+            recentShoot = true;
+            timeSinceLastShot = Time.time;
+            moveSpeed = shootMovementSpeed;
+            shooting = true;
+
+            if (Time.time >= timeBtwShots)
+            {
+                currentWeapon.Shoot();
+                timeBtwShots = Time.time + 1 / currentWeapon.fireRate;
+            }
+        }
+        else
+        {
+            moveSpeed = savedMoveSpeed;
+            shooting = false;
+
+            // Restaurar la posición del aim a la última posición cuando no se está disparando
+            aimTransform.eulerAngles = lastAimPosition;
+        }
+    }
+
     #endregion
 
     #region DASH

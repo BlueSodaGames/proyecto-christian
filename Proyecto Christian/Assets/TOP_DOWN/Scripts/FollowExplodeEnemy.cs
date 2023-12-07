@@ -12,7 +12,7 @@ public class FollowExplodeEnemy :Entity
     public GameObject explosion;
     private bool isAwake = false;
     public float wakeDistance;
-
+    public bool explodeIfFar = false;
 
     private void Update()
     {
@@ -26,6 +26,10 @@ public class FollowExplodeEnemy :Entity
             {
                 float distanceFromPlayer = Vector2.Distance(target.position, transform.position);
                 // Comprueba si el enemigo está en rango de ataque.
+                if (distanceFromPlayer > 20 && explodeIfFar)
+                {
+                    StartCoroutine(ExplodeCoroutine());
+                }
                 if (!isAwake && distanceFromPlayer <= wakeDistance)
                 {
                     isAwake = true;

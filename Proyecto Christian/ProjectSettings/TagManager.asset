@@ -15,6 +15,7 @@ TagManager:
   - CinematicPanel
   - OverworldPanel
   - Breakable
+  - Cursor
   layers:
   - Default
   - TransparentFX

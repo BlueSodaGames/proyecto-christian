@@ -15,7 +15,6 @@ public class TimelineManager : MonoBehaviour
     public GameObject[] objectsToDeactive;
     public ActiveSaver timelineReproducedSaver;
 
-
     public bool finished;
     void Start()
     {
@@ -24,6 +23,12 @@ public class TimelineManager : MonoBehaviour
             if (player)
             {
                 player.disableInput = true;
+                if (player.mobile)
+                {
+                    player.joystickMovement.gameObject.SetActive(false);
+                    player.joystickShoot.gameObject.SetActive(false);
+                }
+                
             }
             else if (playerPlatformer)
             {
@@ -45,6 +50,11 @@ public class TimelineManager : MonoBehaviour
             if (player)
             {
                 player.disableInput = false;
+                if (player.mobile)
+                {
+                    player.joystickMovement.gameObject.SetActive(true);
+                    player.joystickShoot.gameObject.SetActive(true);
+                }
             }
             else if (playerPlatformer)
             {

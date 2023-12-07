@@ -23,12 +23,14 @@ public class AdventurePlayerMovement : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private GameObject referenciaY;
+    public bool mobile;
     private void Start()
     {
         if (virtualCamera == null)
         {
-            virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
+            virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         }
+
         
         anim = GetComponent<Animator>();
         anim.SetFloat("anglex", 1);
@@ -37,17 +39,45 @@ public class AdventurePlayerMovement : MonoBehaviour
     private void Update()
     {
         ChangeScale();
-        if (Input.touchCount > 0)
+        if (mobile)
         {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Began)
+            if (Input.touchCount > 0)
             {
-                targetPosition = Camera.main.ScreenToWorldPoint(touch.position);
-                targetPosition.z = 0f;
+                Touch touch = Input.GetTouch(0);
 
+                if (touch.phase == TouchPhase.Began)
+                {
+                    targetPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                    targetPosition.z = 0f;
+
+                    // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
+                    if (IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
+                    {
+
+                        Vector3 moveDirection = (targetPosition - transform.position).normalized;
+
+                        if (currentMovementCoroutine != null)
+                        {
+                            StopCoroutine(currentMovementCoroutine);
+                        }
+
+                        currentMovementCoroutine = StartCoroutine(MoveToDestination(moveDirection));
+
+                        // Actualizar la animación del personaje.
+                        UpdateAnimation();
+                    }
+
+                }
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0)) // Verifica si se hizo clic con el botón izquierdo del mouse
+            {
+                targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                targetPosition.z = 0f;
                 // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
-                if (IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
+                if (!IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
                 {
 
                     Vector3 moveDirection = (targetPosition - transform.position).normalized;
@@ -62,31 +92,11 @@ public class AdventurePlayerMovement : MonoBehaviour
                     // Actualizar la animación del personaje.
                     UpdateAnimation();
                 }
-                
+
             }
         }
-        else if (Input.GetMouseButtonDown(0)) // Verifica si se hizo clic con el botón izquierdo del mouse
-        {
-            targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition.z = 0f;
-            // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
-            if (!IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
-            {
-
-                Vector3 moveDirection = (targetPosition - transform.position).normalized;
-
-                if (currentMovementCoroutine != null)
-                {
-                    StopCoroutine(currentMovementCoroutine);
-                }
-
-                currentMovementCoroutine = StartCoroutine(MoveToDestination(moveDirection));
-
-                // Actualizar la animación del personaje.
-                UpdateAnimation();
-            }
-            
-        }
+       
+        
         // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
         if (IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
         {
@@ -129,27 +139,15 @@ public class AdventurePlayerMovement : MonoBehaviour
 
         // Configurar la dirección de la animación.
         //arriba
-        if (lastMoveDirection.y > 0.75f)
-        {
-            anim.SetFloat("angley", 1);
-            anim.SetFloat("anglex", 0);
-        }
         //derecha
-        else if (lastMoveDirection.x > 0.75f)
+        if (lastMoveDirection.x > 0f)
         {
-            anim.SetFloat("angley", 0);
             anim.SetFloat("anglex", 1);
         }
-        //abajo
-        else if (lastMoveDirection.y < -0.75f)
-        {
-            anim.SetFloat("angley", -1);
-            anim.SetFloat("anglex", 0);
-        }
+
         //izquierda
-        else if (lastMoveDirection.x < -0.75f)
+        else if (lastMoveDirection.x < 0f)
         {
-            anim.SetFloat("angley", 0);
             anim.SetFloat("anglex", -1);
         }
         Debug.Log(lastMoveDirection);

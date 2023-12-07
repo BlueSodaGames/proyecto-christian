@@ -18,4 +18,7 @@ EditorBuildSettings:
     path: Assets/GRAPHIC_ADVENTURE/Scenes/GraphicAdventure_1.unity
     guid: ae07c574890a61946adca0dc86b65602
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 72e19a008ef3ba447a69ba29db04074d, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: d884ec43c773a394da05f7bba696e077, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 7818ac7e7831d4b4a802ea58968fc5f4, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 0f640b83bd43e934dbb5b70699ecc4d4, type: 2}

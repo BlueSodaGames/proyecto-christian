@@ -33,11 +33,17 @@ public class Weapon : ScriptableObject
     }
     public void Shoot()
     {
-        CinemachineShake.Instance.ShakeCamera(2f, .1f);
-
         if (WeaponHandler.Instance != null)
         {
-            WeaponHandler.Instance.StartShooting();
+            WeaponHandler.Instance.FireSingleShot();
+        }
+    }
+
+    public void ShootMobile()
+    {
+        if (WeaponHandler.Instance != null)
+        {
+            WeaponHandler.Instance.FireSingleShotMobile();
         }
     }
 

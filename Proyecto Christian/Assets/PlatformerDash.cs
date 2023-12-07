@@ -8,24 +8,48 @@ public class PlatformerDash : MonoBehaviour
     public float dashSpeed = 20;
     public bool dashing = false;
     public bool hasDashed;
+    public bool buttonDash;
     // Start is called before the first frame update
 
     private void Update()
     {
         if (player.canMove)
         {
-            float xRaw = Input.GetAxisRaw("Horizontal");
-            float yRaw = Input.GetAxisRaw("Vertical");
-            if (this.enabled && Input.GetButtonDown("JumpDash") && !hasDashed)
+            if (!player.mobile)
             {
-                if (xRaw != 0 || yRaw != 0)
+                float xRaw = Input.GetAxisRaw("Horizontal");
+                float yRaw = Input.GetAxisRaw("Vertical");
+                if (this.enabled && Input.GetButtonDown("JumpDash") && !hasDashed)
                 {
-                    Dash(xRaw, yRaw);
-                }
+                    if (xRaw != 0 || yRaw != 0)
+                    {
+                        Dash(xRaw, yRaw);
+                    }
 
+                }
             }
+            else
+            {
+                float x = player.joystickMovement.Horizontal;
+                float y = player.joystickMovement.Vertical;
+                if (this.enabled && buttonDash && !hasDashed)
+                {
+                    if (x != 0 || y != 0)
+                    {
+                        Dash(x, y);
+                    }
+
+                }
+            }
+            
         }
     }
+
+    public void ButtonDashTrue()
+    {
+        buttonDash = true;
+    }
+
     public void Dash(float x, float y)
     {
         hasDashed = true;
@@ -55,6 +79,7 @@ public class PlatformerDash : MonoBehaviour
         player.rb.gravityScale = 2.5f;
         player.betterJumping.enabled = true;
         dashing = false;
+        buttonDash = false;
     }
 
     IEnumerator GroundDash()
