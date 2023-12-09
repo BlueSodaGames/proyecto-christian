@@ -15,6 +15,12 @@ namespace PixelCrushers
         [Tooltip("Scene to load in LoadOrRestart method if no saved game exists yet.")]
         public string defaultStartingSceneName;
 
+
+        public virtual bool HasSaved(int slotNumber)
+        {
+            return SaveSystem.HasSavedGameInSlot(slotNumber);
+        }
+
         /// <summary>
         /// Saves the current game in the specified slot.
         /// </summary>

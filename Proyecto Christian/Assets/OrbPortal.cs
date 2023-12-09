@@ -9,12 +9,13 @@ public class OrbPortal : MonoBehaviour
     public float force = 0.02f;
     public BoxCollider2D col;
     public SceneFader sceneManager;
-    public int sceneIndexToLoad;
-
+    public string sceneName;
     private bool catched;
 
     [SerializeField] private GameObject player;
     public PlayableDirector timelineOrb;
+    private float currentSize = 1;
+    public string spawnPoint;
 
     private void OnEnable()
     {
@@ -29,10 +30,7 @@ public class OrbPortal : MonoBehaviour
         if (player && player.tag == "Player" && collision.isTrigger)
         {
             timelineOrb.enabled = true;
-            player.GetComponent<TopDownPlayerMovement>().canMove = false;
-            //PlayerPrefs.SetInt("NumberOfCoins", player.numberOfCoins);
-            //PlayerPrefs.SetInt("NumberOfMemories", player.numberOfMemories);
-
+            player.GetComponent<TopDownPlayerMovement>().disableInput = false;
 
             StartCoroutine(animationCoroutine(player.GetComponent<Animator>()));
 
@@ -41,9 +39,11 @@ public class OrbPortal : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (catched)
+        if (catched && currentSize > 0)
         {
             player.transform.position = Vector2.MoveTowards(player.transform.position, this.transform.position, force);
+            currentSize -= 0.005f;
+            player.transform.localScale = new Vector3(currentSize, currentSize, 1f);
         }
     }
 
@@ -52,18 +52,10 @@ public class OrbPortal : MonoBehaviour
         catched = true;
         player.GetComponent<BoxCollider2D>().enabled = false;
         col.enabled = false;
-        yield return new WaitForSeconds(0.4f);
-
-        playerAnimator.SetBool("win", true);
-
-        yield return new WaitForSeconds(0.4f);
-
         yield return new WaitForSeconds(2f);
-        playerAnimator.SetBool("win", false);
         catched = false;
         playerAnimator.gameObject.SetActive(false);
-        sceneManager.LoadIndexLevel(sceneIndexToLoad);
+        sceneManager.LoadIndexLevel(sceneName, spawnPoint);
         Destroy(this.gameObject);
-
     }
 }

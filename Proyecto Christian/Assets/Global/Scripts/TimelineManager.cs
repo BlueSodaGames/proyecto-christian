@@ -18,52 +18,15 @@ public class TimelineManager : MonoBehaviour
     public bool finished;
     void Start()
     {
-        if (disableInputAtStart)
-        {
-            if (player)
-            {
-                player.disableInput = true;
-                if (player.mobile)
-                {
-                    player.joystickMovement.gameObject.SetActive(false);
-                    player.joystickShoot.gameObject.SetActive(false);
-                }
-                
-            }
-            else if (playerPlatformer)
-            {
-                playerPlatformer.canMove = false;
-            }
-            else if (playerAdventure)
-            {
-                
-            }
-            
-        }
         timeline.stopped += OnTimelineFinished;
+        DisablePlayerInput();
     }
 
     private void OnTimelineFinished(PlayableDirector aDirector)
     {
         if (aDirector == timeline)
         {
-            if (player)
-            {
-                player.disableInput = false;
-                if (player.mobile)
-                {
-                    player.joystickMovement.gameObject.SetActive(true);
-                    player.joystickShoot.gameObject.SetActive(true);
-                }
-            }
-            else if (playerPlatformer)
-            {
-                playerPlatformer.canMove = true;
-            }
-            else if (playerAdventure)
-            {
-
-            }
+            EnablePlayerInput();
             if (timelineReproducedSaver != null)
             {
                 timelineReproducedSaver.enabled = true;
@@ -87,5 +50,52 @@ public class TimelineManager : MonoBehaviour
         }
     }
 
+    void DisablePlayerInput()
+    {
 
+        if (player)
+        {
+            player.disableInput = true;
+            if (player.mobile)
+            {
+                player.joystickMovement.gameObject.SetActive(false);
+                player.joystickShoot.gameObject.SetActive(false);
+            }
+        }
+        else if (playerPlatformer)
+        {
+            playerPlatformer.canMove = false;
+        }
+        else if (playerAdventure)
+        {
+            // Puedes agregar lógica específica para el jugador de aventura si es necesario
+        }
+    }
+
+    void EnablePlayerInput()
+    {
+
+        if (player)
+        {
+            player.disableInput = false;
+            if (player.mobile)
+            {
+                player.joystickMovement.gameObject.SetActive(true);
+                player.joystickShoot.gameObject.SetActive(true);
+            }
+        }
+        else if (playerPlatformer)
+        {
+            playerPlatformer.canMove = true;
+        }
+        else if (playerAdventure)
+        {
+            // Puedes agregar lógica específica para el jugador de aventura si es necesario
+        }
+    }
+
+    private void OnDisable()
+    {
+        EnablePlayerInput();
+    }
 }

@@ -13,7 +13,7 @@ namespace PixelCrushers
         public GameObject loadingScreen;
         public GameObject gameOverUITopDown;
         public GameObject gameOverUIPlatformer;
-        // Your other variables...
+        public GameObject saving;
 
         private void Awake()
         {
@@ -25,6 +25,19 @@ namespace PixelCrushers
             {
                 Destroy(gameObject);
             }
+        }
+
+        public void Save()
+        {
+            StartCoroutine(SaveCoroutine());
+        }
+
+        public IEnumerator SaveCoroutine()
+        {
+            saving.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            saving.SetActive(false);
+
         }
     }
 }

@@ -7,35 +7,42 @@ using PixelCrushers;
 
 public class SceneFader : MonoBehaviour
 {
-    public Animator transition;
     public float transitionTime = 1f;
+    public GameObject blackFlash;
+    public GameObject blackFadeStart;
 
-
-
-    public void LoadNextLevel()
+    public void Start()
     {
-        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
-        Resources.UnloadUnusedAssets();
+        blackFadeStart.SetActive(true);
     }
 
-    public void LoadIndexLevel(int indexLevel)
+    public void NewGame()
     {
-        StartCoroutine(LoadLevel(indexLevel));
-        Resources.UnloadUnusedAssets();
+        StartCoroutine(LoadLevel("TopDown_1", ""));
     }
 
-    public IEnumerator LoadLevel(int levelIndex)
+    public void LoadIndexLevel(string levelName, string spawnpoint)
     {
+        StartCoroutine(LoadLevel(levelName, spawnpoint));
+    }
+
+    public IEnumerator LoadLevel(string levelName, string spawnpoint)
+    {
+        Resources.UnloadUnusedAssets();
+
         //AudioManager.Instance.PlaySFX("SceneChange");
-        if (transition != null)
-        {
-            transition.SetTrigger("Start");
-        }
-        
+        blackFlash.SetActive(true);
 
         yield return new WaitForSeconds(transitionTime);
-        string level = SceneManager.GetSceneByBuildIndex(levelIndex).name;
-        SaveSystem.LoadScene("index:"+levelIndex);
+        if (spawnpoint == "" || spawnpoint == null)
+        {
+            SaveSystem.LoadScene(levelName);
+        }
+        else
+        {
+            SaveSystem.LoadScene(levelName + "@" + spawnpoint);
+        }
+        
     }
 
 }

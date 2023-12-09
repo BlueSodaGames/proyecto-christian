@@ -642,12 +642,14 @@ namespace PixelCrushers
 
         private static IEnumerator SaveToSlotCoroutine(int slotNumber)
         {
+            UIManager.Instance.Save();
             saveStarted();
             yield return null;
             PlayerPrefs.SetInt(LastSavedGameSlotPlayerPrefsKey, slotNumber);
             yield return storer.StoreSavedGameDataAsync(slotNumber, RecordSavedGameData());
             saveEnded();
         }
+
 
         /// <summary>
         /// Saves the current game to a slot synchronously and immediately.

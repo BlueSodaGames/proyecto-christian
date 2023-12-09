@@ -7,36 +7,36 @@ public class TopDownPortal : MonoBehaviour
 
     public float waitTime = 2f;
     public float force = 0.02f;
-    public Animator winDoorAnimator;
     public BoxCollider2D col;
     public SceneFader sceneManager;
-    public int sceneIndexToLoad;
-
+    public string sceneName;
     private bool catched;
 
     [SerializeField] private TopDownPlayerMovement player;
+    private float currentSize = 1;
+    public string spawnPoint;
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (player)
         {
 
-            player.canMove = false;
-            //PlayerPrefs.SetInt("NumberOfCoins", player.numberOfCoins);
-            //PlayerPrefs.SetInt("NumberOfMemories", player.numberOfMemories);
-            
+            player.disableInput = false;
             
             StartCoroutine(animationCoroutine(player.GetComponent<Animator>()));
             
         }
     }
 
-
     private void FixedUpdate()
     {
-        if (catched)
+        if (catched && currentSize > 0)
         {
             player.transform.position = Vector2.MoveTowards(player.transform.position, this.transform.position, force);
-        }    
+            currentSize -= 0.005f;
+            player.transform.localScale = new Vector3(currentSize, currentSize, 1f);
+        }
     }
 
     IEnumerator animationCoroutine(Animator playerAnimator)
@@ -44,19 +44,10 @@ public class TopDownPortal : MonoBehaviour
         catched = true;
         player.coll.enabled = false;
         col.enabled = false;
-        yield return new WaitForSeconds(0.4f);
-        
-        playerAnimator.SetBool("win", true);
-
-        yield return new WaitForSeconds(0.4f);
-        winDoorAnimator.SetBool("win", true);
-
         yield return new WaitForSeconds(2f);
-        playerAnimator.SetBool("win", false);
-        winDoorAnimator.SetBool("win", false);
         catched = false;
         playerAnimator.gameObject.SetActive(false);
-        sceneManager.LoadIndexLevel(sceneIndexToLoad);
+        sceneManager.LoadIndexLevel(sceneName, spawnPoint);
         Destroy(this.gameObject);
 
     }

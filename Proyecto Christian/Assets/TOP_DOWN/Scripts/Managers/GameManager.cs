@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject volume;
     public GraphicsQualityController graphicsController;
     public bool menu = false;
 
@@ -28,22 +27,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Application.targetFrameRate = 60;
-        }
-            
-
-
-
-
-        if (volume != null)
-        {
-            if (PlayerPrefs.GetInt("PostprocesadoActivado", 0) == 0)
-            {
-                volume.SetActive(false);
-            }
-            else
-            {
-                volume.SetActive(true);
-            }
         }
         
     }

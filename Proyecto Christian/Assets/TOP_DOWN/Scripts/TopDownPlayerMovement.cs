@@ -17,10 +17,6 @@ public enum PlayerState
 
 public class TopDownPlayerMovement : MonoBehaviour
 {
-    [Header("Hands")]
-    //public Animator leftHandAnim;
-    //public Animator rightHandAnim;
-    
 
     [Space]
     [Header("Player Attributes")]
@@ -38,7 +34,7 @@ public class TopDownPlayerMovement : MonoBehaviour
     [SerializeField] private Transform center;
     [SerializeField] private float knockbackVel = 90f;
     [SerializeField] private float knockbackTime = 0.5f;
-    [SerializeField] private bool knockbacked;
+    [SerializeField] public bool knockbacked;
     [SerializeField] private Vector3 knockbackDirection;
 
     [Space]
@@ -57,15 +53,13 @@ public class TopDownPlayerMovement : MonoBehaviour
     private Vector2 mousePos;
     private bool recentShoot;
     private float timeSinceLastShot = 0f;
-    public float timeToResetRecentShoot = 2f;  // Establece el tiempo deseado antes de restablecer recentShoot
+    public float timeToResetRecentShoot = 2f;
 
     [Space]
     [Header("Dash Atributtes")]
+    public TopDownDash topDownDash;
     public float savedMoveSpeed;
-    [SerializeField] private float dashSpeed;
-    [SerializeField] private float dashLength = .5f, dashCooldown = 1f;
-    private float dashCounter;
-    private float dashCoolCounter;
+
 
     [Space]
     [Header("Visual Effects")]
@@ -87,12 +81,11 @@ public class TopDownPlayerMovement : MonoBehaviour
 
     [HideInInspector]
     private string actualState;
-    private bool dashing = false;
-    private bool shooting = true;
-    private bool walking = true;
-    private bool canDash = true;
+    public bool dashing = false;
+    public bool shooting = true;
+    public bool walking = true;
+    public bool canDash = true;
     private bool dying = false;
-    public bool canMove = true;
     public bool furor = false;
     public bool disableInput = false;
 
@@ -155,14 +148,6 @@ public class TopDownPlayerMovement : MonoBehaviour
             
         }
 
-
-    }
-
-
-
-    private void FixedUpdate()
-    {
-
         if (!disableInput)
         {
             if (mobile)
@@ -195,14 +180,11 @@ public class TopDownPlayerMovement : MonoBehaviour
             if (!mobile)
             {
                 //------SHOOT------
-                
+
                 Shoot();
             }
 
-            
 
-            //------DASH------
-            Dashing();
         }
         else
         {
@@ -214,16 +196,8 @@ public class TopDownPlayerMovement : MonoBehaviour
             anim.SetFloat("anglex", 0);
             anim.SetFloat("angley", -1);
         }
-    }
 
-    public void EnableInput()
-    {
-        disableInput = false;
-    }
 
-    public void DisableInput()
-    {
-        disableInput = false;
     }
 
     #region ANIMATION/INPUT
@@ -346,7 +320,7 @@ public class TopDownPlayerMovement : MonoBehaviour
     void Walking()
     {
 
-        if (movement.x != 0 || movement.y != 0 && canMove)
+        if (movement.x != 0 || movement.y != 0 && !disableInput)
         {
             //CreateDust();
             if (!audioSource.isPlaying)
@@ -439,66 +413,7 @@ public class TopDownPlayerMovement : MonoBehaviour
 
     #endregion
 
-    #region DASH
-    void Dashing()
-    {
-        if (Input.GetButton("Dash") && !knockbacked)
-        {
-            Dash();
-        }
-        if (dashCounter > 0)
-        {
-            dashCounter -= Time.deltaTime;
-            if (dashCounter <= 0)
-            {
-
-                dashing = false;
-                moveSpeed = savedMoveSpeed;
-                dashCoolCounter = dashCooldown;
-                applyCollisions();
-            }
-        }
-
-        if (dashCoolCounter > 0)
-        {
-            canDash = false;
-            dashCoolCounter -= Time.deltaTime;
-        }
-        if (dashCoolCounter <= 0)
-        {
-            canDash = true;
-        }
-    }
-
-    //--------DASH-----------
-    void Dash()
-    {
-        if (dashCoolCounter <= 0 && dashCounter <= 0 && !shooting && walking)
-        {
-            CinemachineShake.Instance.ShakeCamera(3f, .05f);
-            // GameObject dashEffect = Instantiate(dashParticle, transform.position, Quaternion.identity);
-            FindObjectOfType<AudioManager>().PlaySFX("Dash");
-            dashing = true;
-            moveSpeed = dashSpeed;
-            dashCounter = dashLength;
-            ignoreCollisions();
-        }
-    }
-
-    public void ignoreCollisions() {
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Atravesable"), true);
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy Bullet"), true);
-    }
-
-    public void applyCollisions()
-    {
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Atravesable"), false);
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy Bullet"), false);
-    }
-
-    #endregion
+    
 
     #region COMBAT
     //--------HIT-----------
@@ -508,7 +423,6 @@ public class TopDownPlayerMovement : MonoBehaviour
         
         currentHealth.RuntimeValue -= damage;
         playerHealthSignal.Raise();
-        // Instantiate(hitEffect, transform.position, Quaternion.identity);
         if (currentHealth.RuntimeValue > 0)
         {
             StartCoroutine(FlashCo());
@@ -529,7 +443,6 @@ public class TopDownPlayerMovement : MonoBehaviour
         knockbacked = false;
         knockbackDirection = new Vector2(0, 0);
         rb.freezeRotation = true;
-        // Instantiate(blood, transform.position, Quaternion.identity);
         StartCoroutine(Death());
     }
 
@@ -594,14 +507,6 @@ public class TopDownPlayerMovement : MonoBehaviour
     #endregion
 
 
-    //----------CREATE DUST----------------
-    // void CreateDust()
-    //{
-    //    dust.Play();
-    //}
-
-
-
     //--------FLASH-----------
 
     private IEnumerator FlashCo()
@@ -618,9 +523,21 @@ public class TopDownPlayerMovement : MonoBehaviour
         }
 
         applyCollisions();
-
     }
 
 
+    public void ignoreCollisions()
+    {
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Atravesable"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy Bullet"), true);
+    }
+
+    public void applyCollisions()
+    {
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Atravesable"), false);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy Bullet"), false);
+    }
 
 }

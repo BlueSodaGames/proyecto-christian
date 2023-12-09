@@ -7,7 +7,7 @@ public class AdventurePlayerMovement : MonoBehaviour
     [Space]
     [Header("Player Attributes")]
     [SerializeField] public float moveSpeed = 5f;
-    private Vector3 targetPosition;
+    public Vector3 targetPosition;
     private Vector3 lastMoveDirection = Vector3.zero;
     private Coroutine currentMovementCoroutine; // Almacena la corutina actual.
 
@@ -24,13 +24,16 @@ public class AdventurePlayerMovement : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private GameObject referenciaY;
     public bool mobile;
+    public bool canMove;
+    public bool interactuable = false;
+
     private void Start()
     {
         if (virtualCamera == null)
         {
             virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         }
-
+        canMove = true;
         
         anim = GetComponent<Animator>();
         anim.SetFloat("anglex", 1);
@@ -39,19 +42,55 @@ public class AdventurePlayerMovement : MonoBehaviour
     private void Update()
     {
         ChangeScale();
-        if (mobile)
+        if (canMove)
         {
-            if (Input.touchCount > 0)
+            if (mobile)
             {
-                Touch touch = Input.GetTouch(0);
-
-                if (touch.phase == TouchPhase.Began)
+                if (Input.touchCount > 0)
                 {
-                    targetPosition = Camera.main.ScreenToWorldPoint(touch.position);
-                    targetPosition.z = 0f;
+                    Touch touch = Input.GetTouch(0);
 
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        if (!interactuable)
+                        {
+                            targetPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                            targetPosition.z = 0f;
+                        }
+                        
+
+                        // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
+                        if (!interactuable && IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
+                        {
+
+                            Vector3 moveDirection = (targetPosition - transform.position).normalized;
+
+                            if (currentMovementCoroutine != null)
+                            {
+                                StopCoroutine(currentMovementCoroutine);
+                            }
+
+                            currentMovementCoroutine = StartCoroutine(MoveToDestination(moveDirection));
+
+                            // Actualizar la animación del personaje.
+                            UpdateAnimation();
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetMouseButtonDown(0)) // Verifica si se hizo clic con el botón izquierdo del mouse
+                {
+                    if (!interactuable)
+                    {
+                        targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        targetPosition.z = 0f;
+                    }
+                    
                     // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
-                    if (IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
+                    if (!IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
                     {
 
                         Vector3 moveDirection = (targetPosition - transform.position).normalized;
@@ -69,42 +108,17 @@ public class AdventurePlayerMovement : MonoBehaviour
 
                 }
             }
-        }
-        else
-        {
-            if (Input.GetMouseButtonDown(0)) // Verifica si se hizo clic con el botón izquierdo del mouse
+
+            // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
+            if (!interactuable && IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
             {
-                targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                targetPosition.z = 0f;
-                // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
-                if (!IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
-                {
-
-                    Vector3 moveDirection = (targetPosition - transform.position).normalized;
-
-                    if (currentMovementCoroutine != null)
-                    {
-                        StopCoroutine(currentMovementCoroutine);
-                    }
-
-                    currentMovementCoroutine = StartCoroutine(MoveToDestination(moveDirection));
-
-                    // Actualizar la animación del personaje.
-                    UpdateAnimation();
-                }
-
+                StopCoroutine(currentMovementCoroutine);
+                walking = false;
             }
-        }
-       
-        
-        // Verifica si el personaje está colisionando con un Collider con etiqueta "Collisions"
-        if (IsCollidingWithOutOfMapCollider(this.transform.position, targetPosition))
-        {
-            StopCoroutine(currentMovementCoroutine);
-            walking = false;
-        }
 
+        }
         AnimationUpdate();
+        
     }
 
     private void ChangeScale()
@@ -132,7 +146,7 @@ public class AdventurePlayerMovement : MonoBehaviour
         //virtualCamera.Follow = transform;
     }
 
-    private void UpdateAnimation()
+    public void UpdateAnimation()
     {
         // Configurar la velocidad de la animación según la velocidad de movimiento.
         //animator.SetFloat("Speed", isMoving ? moveSpeed : 0f);

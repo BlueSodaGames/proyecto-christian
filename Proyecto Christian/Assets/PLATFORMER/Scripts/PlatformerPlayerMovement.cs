@@ -8,7 +8,7 @@ public class PlatformerPlayerMovement : MonoBehaviour
 {
 
     [Header("Player Attributtes")]
-    [SerializeField] private float speed = 10;
+    [SerializeField] public float speed = 10;
     [SerializeField] private float jumpForce = 10;
     [SerializeField] private float coyoteTime = 0.1f;
     private float coyoteTimer;
@@ -61,7 +61,7 @@ public class PlatformerPlayerMovement : MonoBehaviour
         else
         {
             joystickMovement.gameObject.SetActive(false);
-            botonSalto.gameObject.SetActive(true);
+            botonSalto.gameObject.SetActive(false);
         }
 
         canMove = true;
@@ -85,7 +85,6 @@ public class PlatformerPlayerMovement : MonoBehaviour
             {
                 CheckMovementMobile();
                 CheckJumpMobile();
-
             }
             
             AnimationUpdate();

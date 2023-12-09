@@ -39,7 +39,7 @@ public class InteractableText : MonoBehaviour
             // Actualiza la posición del texto para que siga al cursor.
             Vector3 cursorPosition = Input.mousePosition;
             cursorPosition.z = 10f; // Ajusta la distancia Z para que el texto esté en frente de la cámara.
-            currentText.rectTransform.position = new Vector2(cursorPosition.x, cursorPosition.y + 35);
+            currentText.rectTransform.position = new Vector2(cursorPosition.x, cursorPosition.y + 55);
         }
         
     }
