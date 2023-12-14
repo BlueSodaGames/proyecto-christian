@@ -56,19 +56,14 @@ public class TimelineManager : MonoBehaviour
         if (player)
         {
             player.disableInput = true;
-            if (player.mobile)
-            {
-                player.joystickMovement.gameObject.SetActive(false);
-                player.joystickShoot.gameObject.SetActive(false);
-            }
         }
         else if (playerPlatformer)
         {
             playerPlatformer.canMove = false;
+
         }
         else if (playerAdventure)
         {
-            // Puedes agregar lógica específica para el jugador de aventura si es necesario
         }
     }
 
@@ -78,19 +73,16 @@ public class TimelineManager : MonoBehaviour
         if (player)
         {
             player.disableInput = false;
-            if (player.mobile)
-            {
-                player.joystickMovement.gameObject.SetActive(true);
-                player.joystickShoot.gameObject.SetActive(true);
-            }
+            
         }
         else if (playerPlatformer)
         {
+            
             playerPlatformer.canMove = true;
+                
         }
         else if (playerAdventure)
         {
-            // Puedes agregar lógica específica para el jugador de aventura si es necesario
         }
     }
 

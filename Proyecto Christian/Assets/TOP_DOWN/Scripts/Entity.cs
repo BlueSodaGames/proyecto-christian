@@ -55,7 +55,12 @@ public class Entity : MonoBehaviour
         anim = GetComponent<Animator>();
         hitPoints = MaxHitPoints;
 
-        target = FindObjectOfType<TopDownPlayerMovement>().transform;
+        TopDownPlayerMovement playerMovement = FindObjectOfType<TopDownPlayerMovement>();
+
+        if (playerMovement != null)
+        {
+            target = playerMovement.transform;
+        }
     }
 
     private void Start()

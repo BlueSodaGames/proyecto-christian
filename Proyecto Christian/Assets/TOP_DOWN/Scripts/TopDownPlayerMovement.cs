@@ -91,8 +91,8 @@ public class TopDownPlayerMovement : MonoBehaviour
 
     [Space]
     [Header("Mobile")]
-    [SerializeField] public bool mobile = false;
     [SerializeField] public Joystick joystickMovement, joystickShoot;
+    public GameObject cinematicBar;
 
     [SerializeField] private AudioSource audioSource;
 
@@ -106,26 +106,11 @@ public class TopDownPlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        //if (Application.isMobilePlatform)
-        //{
-        //    mobile = true;
 
-        //}
-        //else
-        //{
-        //    mobile = false;
-        //}
-        if (mobile)
-        {
-            joystickMovement.gameObject.SetActive(true);
-            joystickShoot.gameObject.SetActive(true);
-            
-        }
-        else
-        {
-            joystickMovement.gameObject.SetActive(false);
-            joystickShoot.gameObject.SetActive(false);
-        }
+        
+        joystickMovement.gameObject.SetActive(false);
+        joystickShoot.gameObject.SetActive(false);
+        
 
         savedMoveSpeed = moveSpeed;
         anim = GetComponent<Animator>();
@@ -140,31 +125,23 @@ public class TopDownPlayerMovement : MonoBehaviour
     void Update()
     {
 
-        if (!mobile)
-        {
-            movement.x = Input.GetAxisRaw("Horizontal");
-            movement.y = Input.GetAxisRaw("Vertical");
-            mousePos = mousePositionCam.ScreenToWorldPoint(Input.mousePosition);
+
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+        mousePos = mousePositionCam.ScreenToWorldPoint(Input.mousePosition);
             
-        }
+        
 
         if (!disableInput)
         {
-            if (mobile)
-            {
-                CheckMobileInput();
-                MobileShoot();
-            }
-            else
-            {
 
-                rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-                lookDir = (mousePos - rb.position).normalized;
+            rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+            lookDir = (mousePos - rb.position).normalized;
 
-                angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90f;
-                fireAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-                aimTransform.eulerAngles = new Vector3(0, 0, angle);
-            }
+            angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90f;
+            fireAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+            aimTransform.eulerAngles = new Vector3(0, 0, angle);
+            
 
 
             fireRb.rotation = fireAngle;
@@ -177,13 +154,10 @@ public class TopDownPlayerMovement : MonoBehaviour
 
             AnimationUpdate();
 
-            if (!mobile)
-            {
+
                 //------SHOOT------
 
-                Shoot();
-            }
-
+            Shoot();
 
         }
         else
@@ -202,19 +176,6 @@ public class TopDownPlayerMovement : MonoBehaviour
 
     #region ANIMATION/INPUT
 
-    void CheckMobileInput()
-    {
-        float horizontal = joystickMovement.Horizontal;
-        float vertical = joystickMovement.Vertical;
-
-        // Ajustar el movimiento
-        movement.x = (horizontal >= 0.4f) ? 1 : (horizontal <= -0.4f) ? -1 : 0;
-        movement.y = (vertical >= 0.4f) ? 1 : (vertical <= -0.4f) ? -1 : 0;
-
-        // Mover el personaje
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-        
-    }
 
     private void CheckAngle()
     {
@@ -419,7 +380,6 @@ public class TopDownPlayerMovement : MonoBehaviour
     //--------HIT-----------
     public void TakeHit(float damage)
     {
-        //HitStop.Instance.Stop(0.05f);
         
         currentHealth.RuntimeValue -= damage;
         playerHealthSignal.Raise();

@@ -8,9 +8,10 @@ public class AudioManager : MonoBehaviour
     public Sound[] musicSounds, sfxSounds;
     public static AudioManager Instance;
     public AudioSource musicSource, sfxSource;
-    public float minTimeBetweenSounds = 0.5f; // Tiempo mínimo entre reproducciones de sonido
+    public float minTimeBetweenSounds = 0.5f;
 
-    private float lastSoundTime = 0f; // Último momento en que se reprodujo el sonido
+    private float lastSoundTime = 0f;
+    public bool title = false;
     private void Awake()
     {
         if (Instance == null)
@@ -29,6 +30,20 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
+        if (title)
+        {
+            PlayMusic("TitleTheme");
+        }
+        else
+        {
+            PlayMusic("Theme");
+        }
+    }
+
+    public void SetTitleFalse()
+    {
+        title = false;
+        StopMusic("TitleTheme");
         PlayMusic("Theme");
     }
 
@@ -81,11 +96,10 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            // Comprobar si ha pasado suficiente tiempo desde la última reproducción de sonido
             if (Time.time - lastSoundTime >= minTimeBetweenSounds)
             {
                 sfxSource.PlayOneShot(s.clip);
-                lastSoundTime = Time.time; // Actualizar el último momento en que se reprodujo el sonido
+                lastSoundTime = Time.time;
             }
 
         }

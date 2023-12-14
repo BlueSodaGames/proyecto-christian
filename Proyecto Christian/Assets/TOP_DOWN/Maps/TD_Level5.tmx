@@ -163,8 +163,8 @@
  </layer>
  <objectgroup id="6" name="Collisions">
   <object id="1" x="320" y="0" width="176" height="16"/>
-  <object id="2" x="256" y="80" width="208" height="16"/>
-  <object id="3" x="96" y="80" width="112" height="16"/>
+  <object id="2" x="256" y="72.1818" width="208" height="23.8182"/>
+  <object id="3" x="96" y="73.0909" width="112" height="22.9091"/>
   <object id="4" x="0" y="16" width="112" height="16"/>
   <object id="5" x="32" y="32" width="16" height="96"/>
   <object id="6" x="16" y="128" width="16" height="16"/>
@@ -176,7 +176,7 @@
   <object id="12" x="336" y="96" width="32" height="16"/>
   <object id="13" x="368" y="112" width="48" height="16"/>
   <object id="14" x="416" y="128" width="48" height="16"/>
-  <object id="17" x="496" y="128" width="32" height="32"/>
+  <object id="17" x="496" y="122.5" width="32" height="37.5"/>
   <object id="18" x="496" y="0" width="32" height="64"/>
   <object id="19" x="576" y="64" width="128" height="16"/>
   <object id="20" x="528" y="0" width="192" height="16"/>
@@ -233,8 +233,8 @@
   <object id="81" x="528" y="160" width="64" height="16"/>
   <object id="82" x="528" y="176" width="80" height="16"/>
   <object id="83" x="528" y="192" width="64" height="16"/>
-  <object id="89" x="0" y="160" width="64" height="16"/>
-  <object id="91" x="112" y="160" width="416" height="16"/>
+  <object id="89" x="0" y="151.75" width="64" height="24.25"/>
+  <object id="91" x="112" y="152.25" width="416" height="23.75"/>
   <object id="101" x="278.545" y="178.455" width="17.8182" height="13.0909"/>
   <object id="102" x="598.216" y="82.8295" width="17.8182" height="13.0909"/>
   <object id="105" x="656" y="240" width="32" height="16"/>

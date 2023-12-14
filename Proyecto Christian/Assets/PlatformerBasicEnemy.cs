@@ -15,6 +15,7 @@ public class PlatformerBasicEnemy : MonoBehaviour
     void Start()
     {
         startPoint = transform.position;
+        spriteRenderer.flipX = !toRight;
     }
 
     void Update()

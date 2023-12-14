@@ -9,6 +9,7 @@ public class Interactuable : MonoBehaviour
     [Header("Interactuable Attributes")]
     public CursorController cursor;
     public InteractableText interactableText;
+    private GameObject interactableObject;
     public DialogueSystemTrigger dialog;
     public DialogueSystemTrigger dialogTooFar;
     public AdventurePlayerMovement player;
@@ -16,10 +17,16 @@ public class Interactuable : MonoBehaviour
 
     [Space]
     [Header("Mobile")]
-    public float delayToShowText = 0.5f; // El retraso en segundos antes de mostrar el texto.
+    public float delayToShowText = 0.5f;
     private bool isTouched = false;
     public bool mobile;
     private bool actionsExecuted = false;
+
+
+    private void Start()
+    {
+        if (interactableText != null) { interactableObject = interactableText.AsignText(); }
+    }
 
     private void OnMouseEnter()
     {
@@ -52,38 +59,16 @@ public class Interactuable : MonoBehaviour
     {
         float distance = Vector2.Distance(this.playerDestination.position, player.transform.position);
 
-        if (distance <= 0.2f && !actionsExecuted)  // Verifica la distancia y si las acciones no se han ejecutado
+        if (distance <= 0.2f && !actionsExecuted)  
         {
             player.interactuable = false;
             dialog.OnUse();
-            actionsExecuted = true;  // Marca las acciones como ejecutadas
+            actionsExecuted = true; 
         }
         else if (distance > 0.2f && actionsExecuted)
         {
             // Restablecer el estado si la distancia es mayor nuevamente
             actionsExecuted = false;
-        }
-        if (mobile)
-        {
-            
-            if (Input.touchCount > 0)
-            {
-                dialog.enabled = true;
-
-                Touch touch = Input.GetTouch(0);
-
-                if (touch.phase == TouchPhase.Began)
-                {
-                    StartCoroutine(ShowTextWithDelay());
-                }
-                else if (touch.phase == TouchPhase.Ended)
-                {
-                    StopCoroutine(ShowTextWithDelay());
-                    isTouched = false;
-                    cursor.setNormalCursor();
-                    interactableText.HideText();
-                }
-            }
         }
     }
 
@@ -94,5 +79,14 @@ public class Interactuable : MonoBehaviour
         isTouched = true;
         cursor.setInteractuableCursor();
         interactableText.ShowText();
+    }
+
+    private void OnDisable()
+    {
+        if (interactableObject != null)
+        {
+            interactableObject.gameObject.SetActive(false);
+        }
+        
     }
 }

@@ -21,6 +21,11 @@ public class SceneFader : MonoBehaviour
         StartCoroutine(LoadLevel("TopDown_1", ""));
     }
 
+    public void TitleScreen()
+    {
+        StartCoroutine(LoadLevel("TopDown_0", ""));
+    }
+
     public void LoadIndexLevel(string levelName, string spawnpoint)
     {
         StartCoroutine(LoadLevel(levelName, spawnpoint));

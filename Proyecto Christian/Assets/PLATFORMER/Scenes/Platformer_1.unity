@@ -227,10 +227,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PixelCrushers.SaveSystemMethods, Assembly-CSharp-firstpass
-        m_MethodName: LoadOrRestart
-        m_Mode: 3
+      - m_Target: {fileID: 1227119090}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1416,7 +1416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64578247383140469c45370654a984a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: Wizard
+  actor: Platformer_Wizard
   persistentDataName: 
   portrait: {fileID: 0}
   spritePortrait: {fileID: 0}
@@ -4482,7 +4482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2651784915037644065, guid: b78059d1795aa9041b0e1d4a8de3971b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.400002
+      value: 24.150002
       objectReference: {fileID: 0}
     - target: {fileID: 2651784915037644065, guid: b78059d1795aa9041b0e1d4a8de3971b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8293,10 +8293,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PixelCrushers.SaveSystemMethods, Assembly-CSharp-firstpass
-        m_MethodName: LoadOrRestart
-        m_Mode: 3
+      - m_Target: {fileID: 1227119086}
+        m_TargetAssemblyTypeName: SceneFader, Assembly-CSharp
+        m_MethodName: TitleScreen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10497,10 +10497,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PixelCrushers.SaveSystemMethods, Assembly-CSharp-firstpass
-        m_MethodName: LoadOrRestart
-        m_Mode: 3
+      - m_Target: {fileID: 1227119086}
+        m_TargetAssemblyTypeName: SceneFader, Assembly-CSharp
+        m_MethodName: TitleScreen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10892,7 +10892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64578247383140469c45370654a984a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: Tutorial
+  actor: TD_Tutorial
   persistentDataName: 
   portrait: {fileID: 0}
   spritePortrait: {fileID: 0}
@@ -10937,6 +10937,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1227119089}
+  - component: {fileID: 1227119090}
   - component: {fileID: 1227119088}
   - component: {fileID: 1227119087}
   - component: {fileID: 1227119086}
@@ -11003,6 +11004,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1227119090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227119085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51eaa4a44c7005943afbd5707b2560c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graphicsController: {fileID: 0}
+  menu: 0
 --- !u!1 &1244098879
 GameObject:
   m_ObjectHideFlags: 0
@@ -13443,10 +13458,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PixelCrushers.SaveSystemMethods, Assembly-CSharp-firstpass
-        m_MethodName: LoadOrRestart
-        m_Mode: 3
+      - m_Target: {fileID: 1227119090}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -15143,7 +15158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64578247383140469c45370654a984a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: Tutorial
+  actor: Platformer_Tutorial
   persistentDataName: 
   portrait: {fileID: 0}
   spritePortrait: {fileID: 0}

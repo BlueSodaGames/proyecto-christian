@@ -36,7 +36,6 @@ public class PlatformerPlayerMovement : MonoBehaviour
 
     [Space]
     [Header("Mobile")]
-    [SerializeField] public bool mobile = false;
     [SerializeField] public Joystick joystickMovement;
     [SerializeField] private float tiempoPulsado = 0f;
 
@@ -52,17 +51,11 @@ public class PlatformerPlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (mobile)
-        {
-            joystickMovement.gameObject.SetActive(true);
-            botonSalto.gameObject.SetActive(true);
 
-        }
-        else
-        {
-            joystickMovement.gameObject.SetActive(false);
-            botonSalto.gameObject.SetActive(false);
-        }
+        
+        joystickMovement.gameObject.SetActive(false);
+        botonSalto.gameObject.SetActive(false);
+        
 
         canMove = true;
         rb = GetComponent<Rigidbody2D>();
@@ -76,16 +69,9 @@ public class PlatformerPlayerMovement : MonoBehaviour
     {
         if (canMove)
         {
-            if (!mobile)
-            {
-                CheckMovement();
-                CheckJump();
-            }
-            else
-            {
-                CheckMovementMobile();
-                CheckJumpMobile();
-            }
+           
+            CheckMovement();
+            CheckJump();
             
             AnimationUpdate();
         }

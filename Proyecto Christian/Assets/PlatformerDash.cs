@@ -15,32 +15,18 @@ public class PlatformerDash : MonoBehaviour
     {
         if (player.canMove)
         {
-            if (!player.mobile)
+            
+            float xRaw = Input.GetAxisRaw("Horizontal");
+            float yRaw = Input.GetAxisRaw("Vertical");
+            if (this.enabled && Input.GetButtonDown("JumpDash") && !hasDashed)
             {
-                float xRaw = Input.GetAxisRaw("Horizontal");
-                float yRaw = Input.GetAxisRaw("Vertical");
-                if (this.enabled && Input.GetButtonDown("JumpDash") && !hasDashed)
+                if (xRaw != 0 || yRaw != 0)
                 {
-                    if (xRaw != 0 || yRaw != 0)
-                    {
-                        Dash(xRaw, yRaw);
-                    }
-
+                    Dash(xRaw, yRaw);
                 }
-            }
-            else
-            {
-                float x = player.joystickMovement.Horizontal;
-                float y = player.joystickMovement.Vertical;
-                if (this.enabled && buttonDash && !hasDashed)
-                {
-                    if (x != 0 || y != 0)
-                    {
-                        Dash(x, y);
-                    }
 
-                }
             }
+            
             
         }
     }
@@ -53,8 +39,6 @@ public class PlatformerDash : MonoBehaviour
     public void Dash(float x, float y)
     {
         hasDashed = true;
-
-        player.anim.SetTrigger("dash");
 
         player.rb.velocity = Vector2.zero;
         float adjustedX = x * dashSpeed;

@@ -11,23 +11,12 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        graphicsController.SetGraphicsQuality(0);
 
-        if (!menu)
-        {
-            if (PlayerPrefs.GetInt("LimitarFPSActivado", 1) == 1)
-            {
-                Application.targetFrameRate = 60;
-            }
-            else
-            {
-                Application.targetFrameRate = -1;
-            }
-        }
-        else
-        {
-            Application.targetFrameRate = 60;
-        }
-        
+        Application.targetFrameRate = 60;        
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
